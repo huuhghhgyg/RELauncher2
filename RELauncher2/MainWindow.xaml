@@ -1,0 +1,158 @@
+﻿<Controls:MetroWindow x:Class="RELauncher2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:RELauncher2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="MetroWindow_Loaded">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+    <Grid Loaded="Grid_Loaded" Background="White" Margin="0,0,0.333,-0.333">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TabControl x:Name="tabControl" Margin="0,0,0,0" Width="800">
+            <TabItem Header="Game">
+                <Grid Background="White" Margin="0,0,2,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="comboBox1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="202" DisplayMemberPath="Id" Margin="0,0,85,35.667" Height="21" SelectedIndex="0" />
+                    <Button x:Name="LaunchBtn" Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                        Margin="0,0,22,23.667"
+                        ToolTip="MaterialDesignFloatingActionAccentButton" Background="#FF009688" BorderBrush="#FF009688" Foreground="White" Width="50" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="LaunchBtn_Click">
+                        <materialDesign:PackIcon Kind="Play" />
+                    </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings" BorderBrush="#FF00796B">
+                <Grid Background="White" Margin="0,0,0,-0.333">
+                    <TabControl x:Name="tabControl1">
+                        <TabItem Header="Game Settings">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="7*"/>
+                                    <RowDefinition Height="326*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="366*"/>
+                                    <ColumnDefinition Width="40*"/>
+                                    <ColumnDefinition Width="375*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="label" Content="Account Imformation" HorizontalAlignment="Left" Height="45" Margin="7,0.333,0,0" VerticalAlignment="Top" Width="263" FontSize="24" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                <TextBox x:Name="usrNameText" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="2.667,108.333,0,0" HorizontalAlignment="Left" Width="308" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="2.667,88.333,0,0" Grid.Row="1" Height="15" Width="36" Grid.Column="1"><Run Text="用户名"/></TextBlock>
+                                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Online" Margin="4.667,52.333,0,246.667" HorizontalAlignment="Left" Width="41" Grid.Row="1" Grid.Column="1"/>
+                                <ToggleButton x:Name="onlineMode" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                        			ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="45.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" Click="onlineMode_Click" />
+                                <Label x:Name="label1" Content="密码" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,147.333,0,0" Grid.Row="1" Height="25" Width="35" Grid.ColumnSpan="2"/>
+                                <Button x:Name="saveBtn" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,282.333,10,9.667" Content="Save" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" Click="saveBtn_Click"/>
+                                <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Twitch" VerticalAlignment="Top" Margin="4.667,225.333,0,0" Grid.Row="1" Grid.Column="1"/>
+                                <ToggleButton x:Name="twitch" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                                ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="45.667,224.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" />
+                                <Label x:Name="label2" Grid.ColumnSpan="2" Content="Launch" Grid.Column="2" HorizontalAlignment="Left" Height="45" Margin="39.667,0.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="190" FontSize="24"/>
+                                <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Memory" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,52.333,0,0" Grid.Row="1"/>
+                                <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Margin="39.667,67.333,0,0" Style="{StaticResource MaterialDesignDiscreteSlider}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Maximum="4096"/>
+                                <ToggleButton x:Name="memAuto" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                                ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="233.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="3" Height="18" Checked="ToggleButton_Checked" />
+                                <TextBlock x:Name="textBlock3_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Auto" VerticalAlignment="Top" Grid.Column="3" Margin="205.667,52.333,0,0" Grid.Row="1"/>
+                                <TextBlock x:Name="textBlock3_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,147.333,0,0" Grid.Row="1" Text="Java"/>
+                                <TextBox x:Name="javaText" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="9.667,167.333,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="266"/>
+                                <Button x:Name="javaAuto" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,167.333,10,134.667" Content="Auto" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" FontWeight="Bold" Click="javaAuto_Click"/>
+                                <TextBlock x:Name="textBlock3_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,224.333,0,0" Grid.Row="1" Text="Launch Mode"/>
+                                <RadioButton x:Name="mcLauncher" Content="MCLauncher" Grid.Column="3" HorizontalAlignment="Left" Height="27" Margin="9.667,244.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" IsChecked="True"/>
+                                <RadioButton x:Name="bmcl" Content="BMCL" Grid.Column="3" HorizontalAlignment="Left" Height="27" Margin="115.667,244.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106"/>
+                                <PasswordBox x:Name="passwdText" Grid.Column="1" HorizontalAlignment="Left" Margin="4.667,177.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="306"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Launcher Settings">
+                            <Grid Background="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="121*"/>
+                                    <ColumnDefinition Width="266*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="14*"/>
+                                    <RowDefinition Height="319*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Row="1" Grid.Column="1"><Run Text="Window"/><Run Text="s"/></TextBlock>
+                                <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,35,0,0" Grid.Row="1"><Run Text="Game Window"/><Run Text=" "/><Run Text="Height"/></TextBlock>
+                                <TextBox x:Name="winHeight" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="209" Grid.Column="1" Margin="10,50,0,0" Grid.Row="1"/>
+                                <TextBlock x:Name="textBlock5_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,90,0,0" Grid.Row="1"><Run Text="Game Window"/><Run Text=" "/><Run Text="Width"/></TextBlock>
+                                <TextBox x:Name="winWidth" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="209" Grid.Column="1" Margin="10,105,0,0" Grid.Row="1"/>
+                                <TextBlock x:Name="textBlock5_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,156,0,0" Grid.Row="1" Text="Auto Connect Server"/>
+                                <ToggleButton x:Name="autoConnect" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                        		ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="134,156,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" Click="autoConnect_Click" />
+                                <TextBlock x:Name="textBlock5_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,179,0,0" Grid.Row="1"><Run Text="Server"/><Run Text=" IP"/></TextBlock>
+                                <TextBox x:Name="ipBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="10,197,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+                                <TextBlock x:Name="textBlock4_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Column="2" Grid.Row="1" Text="Launcher"/>
+                                <TextBlock x:Name="textBlock5_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" Margin="10,35,0,0" Grid.Row="1" Text="Title"/>
+                                <TextBox x:Name="formName" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="10,49,0,0" Grid.Row="1" TextWrapping="Wrap" Text="RELauncher2" VerticalAlignment="Top" Width="206"/>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,275,10,9.667" Content="Save" Grid.Row="1" Grid.Column="2" Height="Auto" HorizontalAlignment="Right" Width="71"/>
+                                <TextBlock x:Name="textBlock5_Copy4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" Margin="10,90,0,0" Grid.Row="1" Text="ReSet All Settings"/>
+                                <Button x:Name="button" Content="ReSet" Grid.Column="2" HorizontalAlignment="Left" Margin="10,107,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+                                <TextBlock x:Name="textBlock5_Copy5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,224,0,0" Grid.Row="1" Text="Port"/>
+                                <TextBox x:Name="portBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="10,244,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+                            </Grid>
+                        </TabItem>
+                        <Label x:Name="label3" Content="Label" Height="3" Width="15"/>
+                        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                        	ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Foreground="#FF009688" BorderBrush="#FF00796B" Height="18" IsChecked="True" />
+                        <TextBlock x:Name="textBlock3_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Memory" VerticalAlignment="Top"/>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Download">
+                <Grid Background="White" Margin="0,0,2,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="versionListView" ItemsSource="{Binding}" Margin="0,0,242,0.667" Height="376" IsSynchronizedWithCurrentItem="True">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Ver}" Header="版本" Width="120"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding RelTime}" Header="发布时间" Width="300"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="类型" Width="100"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Url}" Header="Url" Width="0"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Grid x:Name="loadErrorGrid" Margin="0,0,242,0.667" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="5*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="236,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="48" Width="75" FontSize="40" Grid.Row="1"><Run Text="&lt;!&gt;"/><LineBreak/><Run/></TextBlock>
+                    </Grid>
+                    <Grid x:Name="progGrid" Margin="0,0,242,0.667">
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                     Value="0"
+                     IsIndeterminate="True" Grid.Column="0" Margin="251,164" Height="48" Width="48"/>
+                    </Grid>
+                    <Button x:Name="butReloadMC" Style="{StaticResource MaterialDesignFlatButton}"  Content="Reload" Margin="0,0,10,9.667" Height="32" HorizontalAlignment="Right" Width="75" VerticalAlignment="Bottom" Click="butReloadMC_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>
