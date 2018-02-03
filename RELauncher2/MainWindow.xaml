@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:RELauncher2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="MetroWindow_Loaded">
+        Title="MainWindow" Height="450" Width="800" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="re2ico.ico">
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,26 +25,34 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TabControl x:Name="tabControl" Margin="0,0,0,0" Width="800">
-            <TabItem Header="Game">
-                <Grid Background="White" Margin="0,0,2,0">
+            <TabItem Header="游戏" FontWeight="Bold">
+                <Grid x:Name="mainGrid" Margin="0,0,2,0">
+                    <Grid.Background>
+                        <ImageBrush Stretch="Uniform"/>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="comboBox1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="202" DisplayMemberPath="Id" Margin="0,0,85,35.667" Height="21" SelectedIndex="0" />
+                    <Image x:Name="mainImage" Width="792" Margin="0" Stretch="UniformToFill"/>
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Height="77" Background="#99FFFFFF" Margin="482,291,0,0"/>
+                    <ComboBox x:Name="comboBox1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="202" DisplayMemberPath="Id" Margin="0,0,85,36" Height="25" SelectedIndex="0" ToolTip="选择游戏版本" Background="#66FFFFFF" />
                     <Button x:Name="LaunchBtn" Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-                        Margin="0,0,22,23.667"
-                        ToolTip="MaterialDesignFloatingActionAccentButton" Background="#FF009688" BorderBrush="#FF009688" Foreground="White" Width="50" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="LaunchBtn_Click">
-                        <materialDesign:PackIcon Kind="Play" />
+                        Margin="0,0,22,22"
+                        ToolTip="启动游戏" Background="#FF009688" BorderBrush="#FF009688" Foreground="White" Width="50" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="LaunchBtn_Click">
+                        <materialDesign:PackIcon Kind="CubeSend" Width="28" Height="28" />
                     </Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings" BorderBrush="#FF00796B">
+            <TabItem Header="设置" BorderBrush="#FF00796B">
                 <Grid Background="White" Margin="0,0,0,-0.333">
-                    <TabControl x:Name="tabControl1">
-                        <TabItem Header="Game Settings">
+                    <TabControl x:Name="settingControl">
+                        <TabControl.Background>
+                            <ImageBrush Stretch="Uniform"/>
+                        </TabControl.Background>
+                        <TabItem Header="游戏设置">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="7*"/>
@@ -56,61 +64,69 @@
                                     <ColumnDefinition Width="40*"/>
                                     <ColumnDefinition Width="375*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label x:Name="label" Content="Account Imformation" HorizontalAlignment="Left" Height="45" Margin="7,0.333,0,0" VerticalAlignment="Top" Width="263" FontSize="24" Grid.ColumnSpan="2" Grid.Row="1"/>
-                                <TextBox x:Name="usrNameText" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="2.667,108.333,0,0" HorizontalAlignment="Left" Width="308" Grid.Row="1" Grid.Column="1"/>
-                                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="2.667,88.333,0,0" Grid.Row="1" Height="15" Width="36" Grid.Column="1"><Run Text="用户名"/></TextBlock>
-                                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Online" Margin="4.667,52.333,0,246.667" HorizontalAlignment="Left" Width="41" Grid.Row="1" Grid.Column="1"/>
+                                <Label x:Name="label" Content="账户信息" HorizontalAlignment="Left" Height="45" Margin="7,0.333,0,0" VerticalAlignment="Top" Width="263" FontSize="24" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                <TextBox x:Name="usrNameText" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="4.667,108.667,0,0" HorizontalAlignment="Left" Width="306" Grid.Row="1" Grid.Column="1" ToolTip="用户名自己想啊!"/>
+                                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="4.667,88.667,0,0" Grid.Row="1" Height="15" Width="36" Grid.Column="1"><Run Text="用户名"/></TextBlock>
+                                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="正版" Margin="4.667,52.333,0,246.667" HorizontalAlignment="Left" Width="41" Grid.Row="1" Grid.Column="1"/>
                                 <ToggleButton x:Name="onlineMode" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
-                        			ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="45.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" Click="onlineMode_Click" />
-                                <Label x:Name="label1" Content="密码" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,147.333,0,0" Grid.Row="1" Height="25" Width="35" Grid.ColumnSpan="2"/>
-                                <Button x:Name="saveBtn" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,282.333,10,9.667" Content="Save" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" Click="saveBtn_Click"/>
+                        			ToolTip="是正版账户就打开啊喂" HorizontalAlignment="Left" Width="42" Margin="45.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" Click="onlineMode_Click" />
+                                <Label x:Name="label1" Content="密码" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4.667,141.667,0,0" Grid.Row="1" Height="25" Width="35" Grid.Column="1"/>
+                                <Button x:Name="saveBtn" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="保存所有设置" Margin="0,284.667,10,10" Content="保存" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" Click="saveBtn_Click" FontFamily="Minion Pro" FontWeight="Bold"/>
                                 <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Twitch" VerticalAlignment="Top" Margin="4.667,225.333,0,0" Grid.Row="1" Grid.Column="1"/>
                                 <ToggleButton x:Name="twitch" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
-                                ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="45.667,224.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" />
-                                <Label x:Name="label2" Grid.ColumnSpan="2" Content="Launch" Grid.Column="2" HorizontalAlignment="Left" Height="45" Margin="39.667,0.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="190" FontSize="24"/>
-                                <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Memory" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,52.333,0,0" Grid.Row="1"/>
-                                <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Margin="39.667,67.333,0,0" Style="{StaticResource MaterialDesignDiscreteSlider}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Maximum="4096"/>
+                                ToolTip="直播吃屎按这里" HorizontalAlignment="Left" Width="42" Margin="45.667,224.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" />
+                                <Label x:Name="label2" Grid.ColumnSpan="2" Content="启动" Grid.Column="2" HorizontalAlignment="Left" Height="45" Margin="39.667,0.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="190" FontSize="24"/>
+                                <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="内存" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,52.333,0,0" Grid.Row="1"/>
+                                <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Margin="39.667,67.333,0,0" Style="{StaticResource MaterialDesignDiscreteSlider}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Maximum="4096" AutoToolTipPlacement="TopLeft"/>
                                 <ToggleButton x:Name="memAuto" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
-                                ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="233.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="3" Height="18" Checked="ToggleButton_Checked" />
-                                <TextBlock x:Name="textBlock3_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Auto" VerticalAlignment="Top" Grid.Column="3" Margin="205.667,52.333,0,0" Grid.Row="1"/>
+                                ToolTip="算出什么怪数值别怪我" HorizontalAlignment="Left" Width="42" Margin="233.667,52.333,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="3" Height="18" Checked="ToggleButton_Checked" />
+                                <TextBlock x:Name="textBlock3_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" Text="自动" VerticalAlignment="Top" Grid.Column="3" Margin="205.667,52.333,0,0" Grid.Row="1"/>
                                 <TextBlock x:Name="textBlock3_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,147.333,0,0" Grid.Row="1" Text="Java"/>
                                 <TextBox x:Name="javaText" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="9.667,167.333,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="266"/>
-                                <Button x:Name="javaAuto" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,167.333,10,134.667" Content="Auto" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" FontWeight="Bold" Click="javaAuto_Click"/>
-                                <TextBlock x:Name="textBlock3_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,224.333,0,0" Grid.Row="1" Text="Launch Mode"/>
+                                <Button x:Name="javaAuto" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="没装Java按了也没用" Margin="0,165.667,16,137" Content="检测" Grid.Row="1" Grid.Column="3" Height="Auto" HorizontalAlignment="Right" Width="71" FontWeight="Bold" Click="javaAuto_Click" FontFamily="Minion Pro"/>
+                                <TextBlock x:Name="textBlock3_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="9.667,224.333,0,0" Grid.Row="1" Text="启动模式"/>
                                 <RadioButton x:Name="mcLauncher" Content="MCLauncher" Grid.Column="3" HorizontalAlignment="Left" Height="27" Margin="9.667,244.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" IsChecked="True"/>
                                 <RadioButton x:Name="bmcl" Content="BMCL" Grid.Column="3" HorizontalAlignment="Left" Height="27" Margin="115.667,244.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106"/>
-                                <PasswordBox x:Name="passwdText" Grid.Column="1" HorizontalAlignment="Left" Margin="4.667,177.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="306"/>
+                                <PasswordBox x:Name="passwdText" Grid.Column="1" HorizontalAlignment="Left" Margin="4.667,171.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="306" ToolTip="难道密码还要我告诉你吗"/>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Launcher Settings">
+                        <TabItem Header="启动器设置">
                             <Grid Background="White">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="7*"/>
-                                    <ColumnDefinition Width="121*"/>
-                                    <ColumnDefinition Width="266*"/>
+                                    <ColumnDefinition Width="14*"/>
+                                    <ColumnDefinition Width="220*"/>
+                                    <ColumnDefinition Width="22*"/>
+                                    <ColumnDefinition Width="230*"/>
+                                    <ColumnDefinition Width="300*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="14*"/>
                                     <RowDefinition Height="319*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Row="1" Grid.Column="1"><Run Text="Window"/><Run Text="s"/></TextBlock>
-                                <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,35,0,0" Grid.Row="1"><Run Text="Game Window"/><Run Text=" "/><Run Text="Height"/></TextBlock>
-                                <TextBox x:Name="winHeight" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="209" Grid.Column="1" Margin="10,50,0,0" Grid.Row="1"/>
-                                <TextBlock x:Name="textBlock5_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,90,0,0" Grid.Row="1"><Run Text="Game Window"/><Run Text=" "/><Run Text="Width"/></TextBlock>
-                                <TextBox x:Name="winWidth" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="209" Grid.Column="1" Margin="10,105,0,0" Grid.Row="1"/>
-                                <TextBlock x:Name="textBlock5_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,156,0,0" Grid.Row="1" Text="Auto Connect Server"/>
+                                <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Row="1" Grid.Column="1" Text="窗口"/>
+                                <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="0,35,0,0" Grid.Row="1" FontWeight="Bold"><Run Text="游戏窗口宽"/><Run Text="(px)"/></TextBlock>
+                                <TextBox x:Name="winHeight" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="220" Grid.Column="1" Margin="0,49,0,0" Grid.Row="1"/>
+                                <TextBlock x:Name="textBlock5_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="0,90,0,0" Grid.Row="1" FontWeight="Bold"><Run Text="游戏窗口高"/><Run Text="(px)"/></TextBlock>
+                                <TextBox x:Name="winWidth" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="220" Grid.Column="1" Margin="0,107,0,0" Grid.Row="1"/>
+                                <TextBlock x:Name="textBlock5_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="0,156,0,0" Grid.Row="1" Text="自动连接服务器" FontWeight="Bold"/>
                                 <ToggleButton x:Name="autoConnect" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
-                        		ToolTip="MaterialDesignSwitchAccentToggleButton" HorizontalAlignment="Left" Width="42" Margin="134,156,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="18" Click="autoConnect_Click" />
-                                <TextBlock x:Name="textBlock5_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,179,0,0" Grid.Row="1"><Run Text="Server"/><Run Text=" IP"/></TextBlock>
-                                <TextBox x:Name="ipBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="10,197,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-                                <TextBlock x:Name="textBlock4_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Column="2" Grid.Row="1" Text="Launcher"/>
-                                <TextBlock x:Name="textBlock5_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" Margin="10,35,0,0" Grid.Row="1" Text="Title"/>
-                                <TextBox x:Name="formName" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="10,49,0,0" Grid.Row="1" TextWrapping="Wrap" Text="RELauncher2" VerticalAlignment="Top" Width="206"/>
-                                <Button Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Margin="0,275,10,9.667" Content="Save" Grid.Row="1" Grid.Column="2" Height="Auto" HorizontalAlignment="Right" Width="71"/>
-                                <TextBlock x:Name="textBlock5_Copy4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" Margin="10,90,0,0" Grid.Row="1" Text="ReSet All Settings"/>
-                                <Button x:Name="button" Content="ReSet" Grid.Column="2" HorizontalAlignment="Left" Margin="10,107,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
-                                <TextBlock x:Name="textBlock5_Copy5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="10,224,0,0" Grid.Row="1" Text="Port"/>
-                                <TextBox x:Name="portBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="10,244,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+                        		ToolTip="问你打开minecraft的时候要不要自动进服务器" Margin="178,154,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="1" Height="17" Click="autoConnect_Click" />
+                                <TextBlock x:Name="textBlock5_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="0,179,0,0" Grid.Row="1" Text="服务器IP"/>
+                                <TextBox x:Name="ipBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="0,198,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"/>
+                                <TextBlock x:Name="textBlock4_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Column="3" Grid.Row="1" Text="启动器" Margin="0,1,0,0"/>
+                                <TextBlock x:Name="textBlock5_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="0,36,0,0" Grid.Row="1" Text="标题" FontWeight="Bold"/>
+                                <TextBox x:Name="formName" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="0,50,0,0" Grid.Row="1" TextWrapping="Wrap" Text="RELauncher2" VerticalAlignment="Top" Width="206"/>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" ToolTip="保存设置" Margin="0,0,10,10" Content="保存" Grid.Row="1" Grid.Column="4" Height="34" HorizontalAlignment="Right" Width="71" VerticalAlignment="Bottom" Click="Button_Click_1" FontFamily="Minion Pro" FontWeight="Bold"/>
+                                <TextBlock x:Name="textBlock5_Copy4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="0,91,0,0" Grid.Row="1" FontWeight="Bold"><Run Text="重设"/><Run Text="所有设置"/><LineBreak/><Run/></TextBlock>
+                                <Button x:Name="reSet" Content="重设" Grid.Column="3" HorizontalAlignment="Left" Margin="0.333,110,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="reSet_Click" ToolTip="启动器抽风点这里" FontWeight="Bold" FontFamily="Minion Pro" Height="30"/>
+                                <TextBlock x:Name="textBlock5_Copy5" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="0,224,0,0" Grid.Row="1"><Run Text="端口(一般2556"/><Run Text="5"/><Run Text=")"/></TextBlock>
+                                <TextBox x:Name="portBox" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="0,239,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"/>
+                                <TextBlock x:Name="textBlock4_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Grid.Column="3" Grid.Row="1" Text="背景图片" Margin="229,0,0,0" Grid.ColumnSpan="2"/>
+                                <Image x:Name="bgBox" Grid.Column="3" HorizontalAlignment="Left" Height="105" Margin="229,35,0,0" Grid.Row="1" VerticalAlignment="Top" Width="202" Grid.ColumnSpan="2"/>
+                                <TextBlock x:Name="textBlock6" Grid.Column="3" HorizontalAlignment="Left" Margin="229,156,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"><Run Text="注意:请把背景图片复制到启动器目录下并重命名为bgi.jpg"/><LineBreak/><Run Text="再次启动启动器时主页和"/><Run Text="本提示上"/><Run Text="方会显示"/><LineBreak/></TextBlock>
+                                <ToggleButton x:Name="BingDaily" Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" VerticalAlignment="Top"
+                                    ToolTip="问你打开minecraft的时候要不要自动进服务器" HorizontalAlignment="Left" Width="42" Margin="224.667,217,0,0" Foreground="#FF009688" BorderBrush="#FF00796B" Grid.Row="1" Grid.Column="4" Height="22" Click="autoConnect_Click" />
+                                <TextBlock x:Name="textBlock5_Copy6" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="229,217,0,0" Grid.Row="1" Text="开启Bing每日壁纸" Grid.ColumnSpan="2" FontWeight="Bold"/>
                             </Grid>
                         </TabItem>
                         <Label x:Name="label3" Content="Label" Height="3" Width="15"/>
@@ -120,39 +136,12 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="Download">
-                <Grid Background="White" Margin="0,0,2,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <ListView x:Name="versionListView" ItemsSource="{Binding}" Margin="0,0,242,0.667" Height="376" IsSynchronizedWithCurrentItem="True">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Ver}" Header="版本" Width="120"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding RelTime}" Header="发布时间" Width="300"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="类型" Width="100"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Url}" Header="Url" Width="0"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Grid x:Name="loadErrorGrid" Margin="0,0,242,0.667" Visibility="Collapsed">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="5*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="236,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="48" Width="75" FontSize="40" Grid.Row="1"><Run Text="&lt;!&gt;"/><LineBreak/><Run/></TextBlock>
-                    </Grid>
-                    <Grid x:Name="progGrid" Margin="0,0,242,0.667">
-                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                     Value="0"
-                     IsIndeterminate="True" Grid.Column="0" Margin="251,164" Height="48" Width="48"/>
-                    </Grid>
-                    <Button x:Name="butReloadMC" Style="{StaticResource MaterialDesignFlatButton}"  Content="Reload" Margin="0,0,10,9.667" Height="32" HorizontalAlignment="Right" Width="75" VerticalAlignment="Bottom" Click="butReloadMC_Click"/>
-                </Grid>
-            </TabItem>
         </TabControl>
+        <Grid x:Name="LoadingGrid" Height="422" Width="795" Margin="0" Background="White" Visibility="Hidden">
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Value="0"
+                             IsIndeterminate="True" Width="40" Height="40"/>
+            <TextBlock TextWrapping="Wrap" Text="正在加载" Margin="0,245,0,0" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"/>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

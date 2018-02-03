@@ -7,16 +7,13 @@ using KMCCC.Authentication;
 using System.Diagnostics;
 using System.Configuration;
 using MahApps.Metro.Controls.Dialogs;
-using System.Timers;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Reflection;
+using GetBingWallpaper;
+using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using Versions.RawVersionListType;
-using System.Threading.Tasks;
-using System.Data;
-using RELauncher2.Versions;
 
 namespace RELauncher2
 {
@@ -25,15 +22,29 @@ namespace RELauncher2
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public Task TaskEx { get; private set; }
-
         public MainWindow()
         {
             InitializeComponent();
+            LoadingGrid.Visibility = Visibility.Visible;
         }
 
+        public event ResolveEventHandler AssemblyResolve;
+
+        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            //获取加载失败的程序集的全名
+            var assName = new AssemblyName(args.Name).FullName;
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("KMCCC.Pro.dll"))
+                {
+                    var bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, (int)stream.Length);
+                    return Assembly.Load(bytes);//加载资源文件中的dll,代替加载失败的程序集
+                }
+             throw new DllNotFoundException(assName);
+        }
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             var versions = App.Core.GetVersions().ToArray();
             comboBox1.ItemsSource = versions;//绑定数据源
             comboBox1.DisplayMemberPath = "Id";//设置comboBox显示的为版本Id
@@ -149,6 +160,7 @@ namespace RELauncher2
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
             setMemory();
+            this.ShowMessageAsync("内存已被设置", "自动设置已经生效，最大内存已被设置为"+slider.Value, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
 
         private void setMemory()
@@ -158,14 +170,13 @@ namespace RELauncher2
             slider.Maximum = usedMemory;
             if (memAuto.IsChecked == true)
             {
-                slider.Value = Math.Round(usedMemory * 0.8);
+                slider.Value = Math.Round(usedMemory * 0.6);
             }
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = formName.Text;
-            
         }
 
         private void javaAuto_Click(object sender, RoutedEventArgs e)
@@ -202,9 +213,11 @@ namespace RELauncher2
                 passwdText.IsEnabled = false;
             }
         }
-
         private void LaunchBtn_Click(object sender, RoutedEventArgs e)
         {
+            Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            cfa.AppSettings.Settings["setSelect"].Value = comboBox1.SelectedIndex.ToString();
+            cfa.Save();
             Launch();
         }
 
@@ -229,6 +242,7 @@ namespace RELauncher2
             cfa.AppSettings.Settings["usrname"].Value = usrNameText.Text;
             cfa.AppSettings.Settings["javaPath"].Value = javaText.Text;
             cfa.AppSettings.Settings["memory"].Value = slider.Value.ToString();
+            cfa.AppSettings.Settings["memMax"].Value = slider.Maximum.ToString();
             cfa.AppSettings.Settings["GameHeight"].Value = winHeight.Text;
             cfa.AppSettings.Settings["GameWidth"].Value = winWidth.Text;
             cfa.AppSettings.Settings["LaunchMode"].Value = launchMode;
@@ -236,12 +250,18 @@ namespace RELauncher2
             cfa.AppSettings.Settings["online"].Value = onlineMode.IsChecked.ToString();
             cfa.AppSettings.Settings["twitch"].Value = twitch.IsChecked.ToString();
             cfa.AppSettings.Settings["autoconnect"].Value = autoConnect.IsChecked.ToString();
-            cfa.AppSettings.Settings["ip-"].Value = ipBox.Text;
+            cfa.AppSettings.Settings["ip"].Value = ipBox.Text;
+            cfa.AppSettings.Settings["port"].Value = portBox.Text;
+            cfa.AppSettings.Settings["BingDaily"].Value = BingDaily.IsChecked.ToString();
             cfa.Save();
         }
 
         private void Load()//加载
         {
+            if (!File.Exists(@"./RELauncher2.exe.Config"))
+            {
+
+            }
             string launchMode;
             usrNameText.Text = ConfigurationManager.AppSettings["usrname"];
             javaText.Text = ConfigurationManager.AppSettings["javaPath"];
@@ -256,7 +276,9 @@ namespace RELauncher2
             ipBox.Text = ConfigurationManager.AppSettings["ip"];
             portBox.Text = ConfigurationManager.AppSettings["port"];
             formName.Text= ConfigurationManager.AppSettings["title"];
-
+            slider.Maximum = int.Parse(ConfigurationManager.AppSettings["memMax"]);
+            comboBox1.SelectedIndex= int.Parse(ConfigurationManager.AppSettings["setSelect"]);
+            BingDaily.IsChecked = bool.Parse(ConfigurationManager.AppSettings["BingDaily"]);
 
             if (launchMode == "mcLauncher")
             {
@@ -271,87 +293,104 @@ namespace RELauncher2
             {
                 passwdText.IsEnabled = false;
             }
+
+            string url;
+            if (BingDaily.IsChecked == true)
+            {
+                GetWallPaper WallPaperGetter = new GetWallPaper();
+                WallPaperGetter.GetWallPaperUrl();
+                url = "https://" + WallPaperGetter.WallPaperUrl;
+                WallPaperGetter.DownloadFile();
+                //Clipboard.SetDataObject(UrlBlock.Text);
+                GetPictureFromURL(url, mainImage);
+            }
+
+            if (File.Exists(@"./bgi.jpg"))
+            {
+                string startPath = AppDomain.CurrentDomain.BaseDirectory;
+                bgBox.Source = new BitmapImage(new Uri(startPath + "bgi.jpg"));
+                mainImage.Source = new BitmapImage(new Uri(startPath + "bgi.jpg"));
+            }
+        }
+
+        private async void GetPictureFromURL(string URL, System.Windows.Controls.Image image)
+        {
+            await Task.Run(() => Thread.Sleep(0));
+            var request = WebRequest.Create(URL);
+            int ErrorNum = 0, AllErrorNum = 0;
+
+            RETRY:
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                using (var stream = response.GetResponseStream())
+                {
+
+                    //var imgBrush = new ImageBrush();
+                    //var bitmap = new BitmapImage();
+                    //bitmap.BeginInit();//开始设置属性
+                    //bitmap.StreamSource = stream;
+                    //bitmap.EndInit();//终止设置属性
+                    //imgBrush.ImageSource = bitmap;
+                    //grid.Background = imgBrush;
+
+                    //image = new Image();
+
+                    var fullFilePath = @URL;
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(fullFilePath, UriKind.Absolute);
+                    bitmap.EndInit();
+
+                    image.Source = bitmap;
+                }
+            }
+            catch (System.IO.IOException)
+            {
+                if (AllErrorNum <= 3)//错误次数小于三次
+                {
+                    ErrorNum++;//记录
+                    await Task.Delay(100);//停止100ms
+                    goto RETRY;//重试
+                }
+            }
+            await Task.Delay(800);
+            LoadingGrid.Visibility = Visibility.Hidden;
         }
 
         private void butReloadMC_Click(object sender, RoutedEventArgs e)
         {
-            reloadMCVersion();
+
         }
 
-        private void reloadMCVersion()
+        private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
-            butReloadMC.IsEnabled = false;
-            loadErrorGrid.Visibility = Visibility.Collapsed;
-            progGrid.Visibility = Visibility.Visible;
-            versionListView.DataContext = null;
-            var rawJson = new DataContractJsonSerializer(typeof(RawVersionListType));//
-            var getJson = (HttpWebRequest)WebRequest.Create(UrlReplacer.getVersionsUrl());//
-            getJson.Timeout = 10000;
-            getJson.ReadWriteTimeout = 10000;
-            getJson.UserAgent = "MTMCL" + RECore.version;
-            var thGet = new Thread(new ThreadStart(delegate
-            {
-                try
-                {
-                    Dispatcher.Invoke(new Action(async delegate
-                    {
-                        butReloadMC.Content = "RemoteVerGetting";//getting
-                            await Task.Delay(TimeSpan.FromSeconds(1));
-                    }));
-                    var getJsonAns = (HttpWebResponse)getJson.GetResponse();
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    var remoteVersion = rawJson.ReadObject(getJsonAns.GetResponseStream()) as RawVersionListType;
-                    var dt = new DataTable();
-                    dt.Columns.Add("Ver");
-                    dt.Columns.Add("RelTime", typeof(DateTime));
-                    dt.Columns.Add("Type");
-                    dt.Columns.Add("Url");
-                    if (remoteVersion != null)
-                        foreach (RemoteVerType rv in remoteVersion.getVersions())
-                        {
-                            dt.Rows.Add(new object[] { rv.id, DateTime.Parse(rv.releaseTime), rv.type, rv.url });
-                        }
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progGrid.Visibility = Visibility.Collapsed;//膜
-                        butReloadMC.Content = "Reload";
-                        butReloadMC.IsEnabled = true;
-                        versionListView.DataContext = dt;
-                        versionListView.Items.SortDescriptions.Add(new SortDescription("RelTime", ListSortDirection.Descending));
-                    }));
-                }
-                catch (WebException ex)//easywrite
-                {
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progGrid.Visibility = Visibility.Collapsed;
-                        loadErrorGrid.Visibility = Visibility.Visible;
-                        butReloadMC.Content = "Reload";
-                        butReloadMC.IsEnabled = true;
-                    }));
-                }
-                catch (TimeoutException ex)//easywrite
-                {
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progGrid.Visibility = Visibility.Collapsed;
-                        loadErrorGrid.Visibility = Visibility.Visible;
-                        butReloadMC.Content = "Reload";
-                        butReloadMC.IsEnabled = true;
-                    }));
-                }
-                catch (Exception ex)//easywrite
-                {
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progGrid.Visibility = Visibility.Collapsed;
-                        loadErrorGrid.Visibility = Visibility.Visible;
-                        butReloadMC.Content = "Reload";
-                        butReloadMC.IsEnabled = true;
-                    }));
-                }
-            }));
-            thGet.Start();
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            saveSettings();
+        }
+
+        private void reSet_Click(object sender, RoutedEventArgs e)
+        {
+            usrNameText.Text = "";
+            javaText.Text = "";
+            slider.Value = 1024;slider.Maximum = 4096;
+            winHeight.Text = "720";
+            winWidth.Text = "1280";
+            mcLauncher.IsChecked = true;bmcl.IsChecked = false;
+            passwdText.Password = "";
+            onlineMode.IsChecked = false;twitch.IsChecked = false;
+            autoConnect.IsChecked = false;
+            ipBox.Text = "";portBox.Text = "";
+            formName.Text = "RELauncher2";
+            comboBox1.SelectedIndex = 0;
+            BingDaily.IsChecked = true;
+            saveSettings();
+            this.ShowMessageAsync("重设完成", "所有内容均被重新设置，请重新打开启动器", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
     }
 }

@@ -7,10 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RELauncher2", "RELauncher2\
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AppVeyor|Any CPU = AppVeyor|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03F5A2CA-1C07-4F3B-B9B5-8F1E71F71A6D}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
+		{03F5A2CA-1C07-4F3B-B9B5-8F1E71F71A6D}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
 		{03F5A2CA-1C07-4F3B-B9B5-8F1E71F71A6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{03F5A2CA-1C07-4F3B-B9B5-8F1E71F71A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F5A2CA-1C07-4F3B-B9B5-8F1E71F71A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
