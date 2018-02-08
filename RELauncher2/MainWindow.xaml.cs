@@ -14,6 +14,7 @@ using GetBingWallpaper;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
+using Microsoft.VisualBasic.Devices;
 
 namespace RELauncher2
 {
@@ -25,10 +26,11 @@ namespace RELauncher2
         public MainWindow()
         {
             InitializeComponent();
-            LoadingGrid.Visibility = Visibility.Visible;
+            if (ConfigurationManager.AppSettings["BingDaily"].ToString() == "true")
+            {
+                LoadingGrid.Visibility = Visibility.Visible;
+            }
         }
-
-        public event ResolveEventHandler AssemblyResolve;
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -165,9 +167,10 @@ namespace RELauncher2
 
         private void setMemory()
         {
-            double usedMemory = 0;
-            usedMemory = Math.Round(Process.GetCurrentProcess().WorkingSet64 / 1024.0 / 1024.0 * 100);
-            slider.Maximum = usedMemory;
+            ComputerInfo ci = new ComputerInfo();        
+            double usedMemory = ci.TotalPhysicalMemory / 1024 / 1024;
+            usedMemory = ci.AvailablePhysicalMemory / 1024 / 1024;
+            slider.Maximum = ci.TotalPhysicalMemory / 1024 / 1024;
             if (memAuto.IsChecked == true)
             {
                 slider.Value = Math.Round(usedMemory * 0.6);
@@ -263,7 +266,7 @@ namespace RELauncher2
 
             }
             string launchMode;
-            usrNameText.Text = ConfigurationManager.AppSettings["usrname"];
+            
             javaText.Text = ConfigurationManager.AppSettings["javaPath"];
             slider.Value= int.Parse(ConfigurationManager.AppSettings["memory"]);
             winHeight.Text = ConfigurationManager.AppSettings["GameHeight"];
